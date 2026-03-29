@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduCourse – Manage My Courses</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand"><img src="favicon.svg" class="nav-icon" alt="" /> EduCourse</div>
+    <div class="nav-right" style="margin-left:auto">
+      <div class="nav-links">
+        <a href="index.html">Courses</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="purchased.html">My Learning</a>
+        <a href="manage-courses.html" class="active">Manage Courses</a>
+        <a href="admin.html" id="link-admin" style="display:none">Admin</a>
+      </div>
+      <span class="nav-user" id="nav-user"></span>
+      <button id="btn-logout" class="btn btn-ghost btn-sm">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="section-card">
+      <h2>&#10133; Add New Course</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">
+        Courses you add are attributed to your account. You can only delete courses you created.
+      </p>
+      <div id="msg-course" class="msg hidden"></div>
+      <div class="form-grid">
+        <div class="field"><label>Course Title</label><input id="c-title" placeholder="e.g. React for Beginners" /></div>
+        <div class="field"><label>Instructor Name</label><input id="c-instructor" placeholder="e.g. John Smith" /></div>
+        <div class="field">
+          <label>Category</label>
+          <select id="c-category">
+            <option value="">Select category&hellip;</option>
+            <option>Programming</option><option>Web Dev</option><option>Data Science</option>
+            <option>Database</option><option>DevOps</option><option>Mobile Dev</option>
+            <option>Cloud</option><option>Cybersecurity</option>
+          </select>
+        </div>
+        <div class="field"><label>Price (&#8377;, enter 0 for Free)</label><input id="c-price" type="number" min="0" placeholder="e.g. 499" /></div>
+        <div class="field"><label>Duration</label><input id="c-duration" placeholder="e.g. 10 hours" /></div>
+        <div class="field">
+          <label>Level</label>
+          <select id="c-level">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+        <div class="field span-2">
+          <label>Description</label>
+          <textarea id="c-desc" rows="3" placeholder="Briefly describe the course content&hellip;"></textarea>
+        </div>
+      </div>
+      <button id="btn-add" class="btn btn-primary">Add Course</button>
+    </div>
+
+    <div class="section-card">
+      <h2>&#128218; My Courses</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Only courses you added are shown here.</p>
+      <div id="msg-courses" class="msg hidden"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Category</th><th>Instructor</th><th>Level</th><th>Price</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="courses-body">
+            <tr><td colspan="6" style="color:var(--muted);padding:20px">Loading&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/manage-courses.js"></script>
+  <script>injectFooter();</script>
+</body>
+</html>

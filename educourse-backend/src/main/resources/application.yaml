@@ -1,0 +1,71 @@
+# ============================================================
+#  EduCourse - Application Configuration
+# ============================================================
+
+spring:
+  application:
+    name: EduCourse
+
+  # Load admin bootstrap configuration
+  config:
+    import: optional:classpath:admin-users.properties
+
+  # ── Database Configuration ──────────────────────────────
+  # Using H2 in-memory database for development.
+  # jdbc:h2:mem:educourse  → database named "educourse" in memory
+  # All data is wiped when the application restarts.
+  # To switch to PostgreSQL, replace these 3 lines with your DB URL/credentials.
+  datasource:
+    url: jdbc:h2:mem:educourse
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  # ── H2 Console ──────────────────────────────────────────
+  # Enables a browser-based SQL console for the H2 database.
+  # Access at: http://localhost:8080/h2-console
+  # JDBC URL to enter in console: jdbc:h2:mem:educourse
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # ── JPA / Hibernate Configuration ───────────────────────
+  jpa:
+    hibernate:
+      # create → drops and recreates all tables on every startup.
+      # Other options: update (keep data), validate (check only), none
+      ddl-auto: create
+    show-sql: true   # prints SQL queries to the console — helpful for debugging
+    defer-datasource-initialization: true  # ensures data.sql runs AFTER Hibernate creates tables
+
+  # ── SQL Initialization ───────────────────────────────────
+  # Tells Spring to always run data.sql on startup.
+  # data.sql seeds the roles table with ROLE_ADMIN and ROLE_STUDENT.
+  sql:
+    init:
+      mode: always
+
+# ── JWT Configuration ──────────────────────────────────────
+# secret   : The key used to sign and verify JWT tokens.
+#            Must be at least 32 characters for HMAC-SHA256.
+#            ⚠ In production: use an environment variable, never hardcode.
+#            Example: export JWT_SECRET=your-secret-key
+#
+# expiration: Token validity in milliseconds.
+#            86400000 = 24 hours (60 * 60 * 24 * 1000)
+jwt:
+  secret: MyVeryStrongSecretKeyForJwtTokenGeneration123456789
+  expiration: 86400000
+
+# ── SpringDoc / Swagger UI ──────────────────────────────────
+# Swagger UI available at: http://localhost:8080/swagger-ui/index.html
+# OpenAPI JSON spec at:    http://localhost:8080/v3/api-docs
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    displayRequestDuration: true

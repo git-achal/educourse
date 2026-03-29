@@ -1,0 +1,76 @@
+# ╔══════════════════════════════════════════╗
+# ║        EduCourse — .gitignore            ║
+# ║  Place this file at the repo ROOT        ║
+# ╚══════════════════════════════════════════╝
+
+# ── Java / Maven (backend/) ─────────────────────────────────
+# Compiled bytecode — never commit these, they are rebuilt by Maven
+backend/target/
+backend/**/*.class
+
+# Maven wrapper download cache
+backend/.mvn/repository/
+
+# Packaged JARs and WARs — large binary files, rebuilt on deploy
+backend/*.jar
+backend/*.war
+
+# ── IDE & Editor files ───────────────────────────────────────
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+
+# NetBeans
+nbproject/
+nbbuild/
+nbdist/
+nb-configuration.xml
+
+# ── OS generated files ───────────────────────────────────────
+.DS_Store           # macOS finder metadata
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db           # Windows thumbnail cache
+desktop.ini
+
+# ── Secrets & Environment ────────────────────────────────────
+# NEVER commit API keys, passwords, or secrets
+.env
+.env.local
+.env.production
+*.secret
+secrets.properties
+
+# If you create a local override of application.yaml, exclude it:
+backend/src/main/resources/application-local.yaml
+backend/src/main/resources/application-prod.yaml
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+backend/logs/
+
+# ── Frontend ─────────────────────────────────────────────────
+# Vanilla JS frontend has no build step, so nothing to exclude
+# except any accidental editor/OS files (covered above)
+
+# If you ever add Node.js tooling (e.g. for linting):
+node_modules/
+npm-debug.log*
+yarn-error.log*

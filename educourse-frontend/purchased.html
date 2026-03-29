@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduCourse – My Learning</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand"><img src="favicon.svg" class="nav-icon" alt="" /> EduCourse</div>
+    <div class="nav-right" style="margin-left:auto">
+      <div class="nav-links">
+        <a href="index.html">Courses</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="purchased.html" class="active">My Learning</a>
+        <a href="manage-courses.html" id="link-manage" style="display:none">Manage Courses</a>
+        <a href="admin.html"          id="link-admin"  style="display:none">Admin</a>
+      </div>
+      <span class="nav-user" id="nav-user"></span>
+      <button id="btn-logout" class="btn btn-ghost btn-sm">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header"><h1>&#127891; My Learning</h1></div>
+    <div id="err" class="msg hidden"></div>
+    <div class="course-grid" id="grid"></div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    auth.guard();
+
+    async function boot() {
+      await refreshSession();
+      initNav();
+      if (auth.isAdmin())        document.getElementById("link-admin").style.display  = "";
+      if (auth.isStudentAdmin()) document.getElementById("link-manage").style.display = "";
+      load();
+    }
+
+    async function load() {
+      try {
+        var courses = await api.get("/api/purchases");
+        var grid = document.getElementById("grid");
+        if (!courses.length) {
+          grid.innerHTML = '<div class="empty-state"><div class="big">&#128218;</div><p>No enrolled courses yet. Browse and enroll to start learning!</p></div>';
+          return;
+        }
+        grid.innerHTML = courses.map(function(c) {
+          return (
+            '<div class="course-card">' +
+              '<div class="card-category">'   + c.category   + '</div>' +
+              '<div class="card-title">'      + c.title      + '</div>' +
+              '<div class="card-instructor">' + c.instructor + '</div>' +
+              '<div class="card-tags"><span class="tag">' + c.level + '</span><span class="tag">' + c.duration + '</span></div>' +
+              '<div class="card-description">' + c.description + '</div>' +
+              '<div class="card-footer">' +
+                (c.price === 0 ? '<span class="card-price free">Free</span>' : '<span class="card-price">\u20B9' + c.price + '</span>') +
+                '<span class="badge badge-green">&#10003; Enrolled</span>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
+      } catch (e) { if (!e.isNetworkError) msg("err", e.message, "error"); }
+    }
+
+    boot();
+  </script>
+  <script>injectFooter();</script>
+</body>
+</html>

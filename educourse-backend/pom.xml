@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Spring Boot Parent POM
+        Provides default versions for all Spring Boot dependencies.
+        We do NOT need to specify versions for spring-* dependencies below
+        because this parent manages them automatically.
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.0</version>
+        <relativePath/>
+    </parent>
+
+    <!-- Project identity -->
+    <groupId>com.edu</groupId>
+    <artifactId>educourse</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>EduCourse</name>
+    <description>EduCourse - Spring Security Project for Course Management with JWT and Role-Based Access Control</description>
+
+    <properties>
+        <!-- Use Java 21 (LTS) -->
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!--
+            spring-boot-starter-web
+            Provides: Spring MVC, REST controllers, embedded Tomcat server.
+            Needed for: @RestController, @RequestMapping, ResponseEntity, etc.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--
+            spring-boot-starter-security
+            Provides: Spring Security framework.
+            Needed for: SecurityFilterChain, JWT filter, BCrypt, AuthenticationManager,
+                        @PreAuthorize, hasRole(), UserDetailsService, etc.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!--
+            spring-boot-starter-data-jpa
+            Provides: Spring Data JPA + Hibernate ORM.
+            Needed for: @Entity, @Repository, JpaRepository, @ManyToMany, etc.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--
+            spring-boot-starter-validation
+            Provides: Bean Validation (Jakarta Validation API + Hibernate Validator).
+            Needed for: @NotBlank, @Size on DTO fields + @Valid in controllers.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!--
+            H2 In-Memory Database
+            A lightweight database that runs inside the JVM — no installation needed.
+            Used for development and testing only (scope: runtime).
+            Data is lost when the application stops.
+            Access the H2 browser console at: http://localhost:8080/h2-console
+        -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+            JJWT (Java JWT) — API jar
+            Provides the interfaces and classes we use directly in our code:
+            Jwts, Claims, JwtBuilder, etc.
+            Version 0.11.5 uses the modern Keys.hmacShaKeyFor() approach.
+        -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+
+        <!--
+            JJWT — Implementation jar
+            The actual runtime implementation of the JJWT API interfaces.
+            scope: runtime — we don't reference it directly in code,
+            but it must be on the classpath at runtime.
+        -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+            JJWT — Jackson JSON support
+            Allows JJWT to serialize/deserialize JWT claims using Jackson.
+            scope: runtime — used internally by JJWT, not referenced in our code.
+        -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+            spring-boot-starter-test
+            Provides: JUnit 5, Mockito, AssertJ for writing unit and integration tests.
+            scope: test — only used during testing, not included in the final jar.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--
+            spring-security-test
+            Provides: @WithMockUser, SecurityMockMvcRequestPostProcessors for testing
+            secured endpoints with mock users and roles.
+            scope: test — only used during testing.
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Swagger UI / OpenAPI docs -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Spring Boot Maven Plugin
+                Packages the application as an executable JAR (fat jar).
+                Run with: mvn spring-boot:run  OR  java -jar target/educourse-0.0.1-SNAPSHOT.jar
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

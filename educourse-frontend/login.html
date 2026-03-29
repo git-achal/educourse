@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduCourse – Sign In</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+</head>
+<body class="auth-body">
+
+  <div class="auth-card">
+    <div class="auth-logo"><img src="favicon.svg" class="auth-icon" alt="" /> EduCourse</div>
+    <p class="auth-sub">Sign in with your email address</p>
+
+    <div id="err" class="msg error hidden"></div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <input id="email" type="email" placeholder="you@example.com" autofocus />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="password" type="password" placeholder="Enter your password" />
+    </div>
+
+    <button id="btn-login" class="btn btn-primary btn-full">Sign In</button>
+    <p class="auth-footer">No account? <a href="register.html">Register here</a></p>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById("btn-login").addEventListener("click", async function() {
+      var email    = document.getElementById("email").value.trim().toLowerCase();
+      var password = document.getElementById("password").value;
+      hideMsg("err");
+      if (!email || !password) return msg("err", "Please fill in both fields.", "error");
+
+      try {
+        var data = await api.post("/api/auth/login", { email: email, password: password });
+        session.set("token", data.token);
+        session.set("email", email);
+
+        var me = await api.get("/api/user/me");
+        session.set("fullName", me.fullName);
+        session.set("roles",    me.roles);
+
+        if (me.roles.indexOf("ROLE_ADMIN") >= 0)              location.href = "admin.html";
+        else if (me.roles.indexOf("ROLE_STUDENT_ADMIN") >= 0) location.href = "manage-courses.html";
+        else                                                   location.href = "index.html";
+      } catch (e) {
+        msg("err", e.isNetworkError ? "Cannot reach server. Is the backend running?" : (e.message || "Invalid email or password."), "error");
+      }
+    });
+
+    document.getElementById("password").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") document.getElementById("btn-login").click();
+    });
+  </script>
+</body>
+</html>
